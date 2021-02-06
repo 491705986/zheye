@@ -5,14 +5,28 @@
     <form>
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
-        <ValidateInput v-model="emailRef.val" :rules="emailRules" />
+        <ValidateInput
+          v-model="emailVal"
+          :rules="emailRules"
+          type="text"
+          placeholder="请输入邮箱地址"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">密码</label>
+        <ValidateInput
+          v-model="passwordVal"
+          :rules="passwordRules"
+          type="password"
+          placeholder="请输入密码"
+        />
       </div>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue';
+import { defineComponent, ref } from 'vue';
 import ColumnList, { ColumnProps } from '@/components/ColumnList.vue';
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue';
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue';
@@ -34,8 +48,6 @@ const testData: ColumnProps[] = [
   }
 ];
 
-const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
 export default defineComponent({
   name: 'App',
   components: { ColumnList, GlobalHeader, ValidateInput },
@@ -45,31 +57,25 @@ export default defineComponent({
       .fill(testData[0])
       .map((item, index) => ({ ...item, id: index + 1 }));
 
+    const emailVal = ref('');
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱地址不能为空' },
       { type: 'email', message: '请输入正确的电子邮箱格式' }
     ];
 
-    const emailRef = reactive({
-      val: '',
-      error: false,
-      message: ''
-    });
-    const validateEmail = () => {
-      if (emailRef.val === '') {
-        emailRef.error = true;
-        emailRef.message = 'can not be empty';
-      } else if (!emailReg.test(emailRef.val)) {
-        emailRef.error = true;
-        emailRef.message = 'should be valid email';
-      }
-    };
+    const passwordVal = ref('');
+    const passwordRules: RulesProp = [
+      { type: 'required', message: '电子邮箱地址不能为空' },
+      { type: 'email', message: '请输入正确的电子邮箱格式' }
+    ];
+
     return {
       list,
       currentUser,
-      emailRef,
-      validateEmail,
-      emailRules
+      emailVal,
+      emailRules,
+      passwordVal,
+      passwordRules
     };
   }
 });
