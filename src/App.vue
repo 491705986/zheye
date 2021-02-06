@@ -15,8 +15,8 @@ const testData: ColumnProps[] = [
     id: 1,
     title: '123',
     description:
-      "Some quick example text to build on the card title and make up the bulk of the card's content.",
-    avatar: Logo
+      "Some quick example text to build on the card title and make up the bulk of the card's content."
+    // avatar: Logo
   }
 ];
 
