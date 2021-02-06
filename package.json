@@ -48,8 +48,8 @@
   },
   "lint-staged": {
     "src/**/*.{jsx,txs,ts,js,vue}": [
-      "yarn lint",
-      "git add"
+      "vue-cli-service lint --fix",
+      "prettier --write"
     ]
   }
 }
