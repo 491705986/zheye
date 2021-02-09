@@ -1,69 +1,35 @@
 <template>
   <div class="container">
     <GlobalHeader :user="currentUser" />
-    <ValidateForm @form-submit="onFormSubmit">
-      <div class="mb-3">
-        <label class="form-label">邮箱地址</label>
-        <ValidateInput
-          v-model="emailVal"
-          :rules="emailRules"
-          type="text"
-          placeholder="请输入邮箱地址"
-        />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">密码</label>
-        <ValidateInput
-          v-model="passwordVal"
-          :rules="passwordRules"
-          type="password"
-          placeholder="请输入密码"
-        />
-      </div>
-      <template v-slot:submit>
-        <span class="btn btn-danger">Submit</span>
-      </template>
-    </ValidateForm>
+    <router-view />
+    <footer class="text-center py-4 text-secondary bg-light mt-6">
+      <small>
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item">© 2020 者也专栏</li>
+          <li class="list-inline-item">课程</li>
+          <li class="list-inline-item">文档</li>
+          <li class="list-inline-item">联系</li>
+          <li class="list-inline-item">更多</li>
+        </ul>
+      </small>
+    </footer>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import GlobalHeader, { UserProps } from '@/components/GlobalHeader.vue';
-import ValidateForm from '@/components/ValidateForm.vue';
-import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue';
 
 const currentUser: UserProps = {
-  isLogin: true,
-  name: 'Ben',
-  id: '123'
+  isLogin: false
 };
 
 export default defineComponent({
   name: 'App',
-  components: { GlobalHeader, ValidateForm, ValidateInput },
+  components: { GlobalHeader },
   setup() {
-    const emailVal = ref('491705986@qq.com');
-    const emailRules: RulesProp = [
-      { type: 'required', message: '电子邮箱地址不能为空' },
-      { type: 'email', message: '请输入正确的电子邮箱格式' }
-    ];
-    const passwordVal = ref('123456');
-    const passwordRules: RulesProp = [
-      { type: 'required', message: '密码不能为空' }
-    ];
-
-    const onFormSubmit = (result: boolean) => {
-      console.log('result', result);
-    };
-
     return {
-      currentUser,
-      emailVal,
-      emailRules,
-      passwordVal,
-      passwordRules,
-      onFormSubmit
+      currentUser
     };
   }
 });
