@@ -3,7 +3,9 @@
     <a class="navbar-brand" href="#">者也专栏</a>
     <ul v-if="!user.isLogin" class="list-inline mb-0">
       <li class="list-inline-item">
-        <a class="btn btn-outline-light my-2" href="#">登录</a>
+        <router-link to="/login" class="btn btn-outline-light my-2" href="#">
+          登录
+        </router-link>
       </li>
       <li class="list-inline-item">
         <a class="btn btn-outline-light my-2" href="#">注册</a>
