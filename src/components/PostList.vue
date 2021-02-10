@@ -33,10 +33,10 @@ interface PostProps {
   title: string;
   excerpt?: string;
   content?: string;
-  image?: ImageProps | string;
+  image?: string;
   createdAt?: string;
   column: string;
-  author?: string | UserProps;
+  author?: string;
   isHTML?: boolean;
 }
 export default defineComponent({
