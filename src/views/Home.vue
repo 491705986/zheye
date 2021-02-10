@@ -21,6 +21,7 @@ import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 import { GlobalDataProps } from '@/store';
 import ColumnList from '@/components/ColumnList.vue';
+import { getColumns } from '@/api';
 
 export default defineComponent({
   name: 'Home',
@@ -28,6 +29,12 @@ export default defineComponent({
   setup() {
     const store = useStore<GlobalDataProps>();
     const list = computed(() => store.state.columns);
+    const handleGetColumns = () => {
+      getColumns({ currentPage: 1, pageSize: 6 }).then(res => {
+        console.log(res);
+      });
+    };
+    handleGetColumns();
     return {
       list
     };
