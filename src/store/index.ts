@@ -1,5 +1,6 @@
+import { getColumns } from '@/api';
 import { createStore, createLogger } from 'vuex';
-import { testPosts, testData } from '@/testData';
+import { testPosts } from '@/testData';
 
 interface UserProps {
   isLogin: boolean;
@@ -8,12 +9,19 @@ interface UserProps {
   columnId?: number;
 }
 
+interface ImageProps {
+  _id?: string;
+  url?: string;
+  createdAt?: string;
+}
+
 export interface ColumnProps {
-  id: number;
+  _id: string;
   title: string;
-  avatar?: string;
+  avatar?: ImageProps;
   description: string;
 }
+
 export interface PostProps {
   id: number;
   title: string;
@@ -31,7 +39,7 @@ export interface GlobalDataProps {
 
 const store = createStore<GlobalDataProps>({
   state: {
-    columns: testData,
+    columns: [],
     posts: testPosts,
     user: { isLogin: true, name: 'Ben', columnId: 1 }
   },
@@ -46,11 +54,21 @@ const store = createStore<GlobalDataProps>({
     },
     createPost(state, newPost) {
       state.posts.push(newPost);
+    },
+    fetchColumns(state, rawData) {
+      state.columns = rawData;
+    }
+  },
+  actions: {
+    fetchColumns(context) {
+      getColumns({ currentPage: 1, pageSize: 10 }).then(res => {
+        context.commit('fetchColumns', res.data.list);
+      });
     }
   },
   getters: {
-    getColumnById: state => (id: number) => {
-      return state.columns.find(c => c.id === id);
+    getColumnById: state => (id: string) => {
+      return state.columns.find(c => c._id === id);
     },
     getPostsByCid: state => (currentId: number) => {
       return state.posts.filter(post => post.columnId === currentId);
