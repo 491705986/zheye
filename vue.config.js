@@ -7,7 +7,7 @@ module.exports = {
     open: true, // 配置自动启动浏览器
     proxy: {
       '/': {
-        target: 'http://api.vikingship.xyz/', //你要访问的服务器域名
+        target: 'http://api.vikingship.xyz/api', //你要访问的服务器域名
         changeOrigin: true, //允许跨域
         pathRewrite: {
           '^/': ''

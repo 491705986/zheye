@@ -1,6 +1,5 @@
-import { getColumns } from '@/api';
+import { getColumns, getColumnDetail, getPosts } from '@/api';
 import { createStore, createLogger } from 'vuex';
-import { testPosts } from '@/testData';
 
 interface UserProps {
   isLogin: boolean;
@@ -23,12 +22,13 @@ export interface ColumnProps {
 }
 
 export interface PostProps {
-  id: number;
+  _id: string;
   title: string;
-  content: string;
-  image?: string;
+  excerpt?: string;
+  content?: string;
+  image?: ImageProps;
   createdAt: string;
-  columnId: number;
+  column: string;
 }
 
 export interface GlobalDataProps {
@@ -40,7 +40,7 @@ export interface GlobalDataProps {
 const store = createStore<GlobalDataProps>({
   state: {
     columns: [],
-    posts: testPosts,
+    posts: [],
     user: { isLogin: true, name: 'Ben', columnId: 1 }
   },
   mutations: {
@@ -57,12 +57,28 @@ const store = createStore<GlobalDataProps>({
     },
     fetchColumns(state, rawData) {
       state.columns = rawData;
+    },
+    fetchColumn(state, rawData) {
+      state.columns = [rawData];
+    },
+    fetchPosts(state, rawData) {
+      state.posts = rawData;
     }
   },
   actions: {
-    fetchColumns(context) {
-      getColumns({ currentPage: 1, pageSize: 10 }).then(res => {
-        context.commit('fetchColumns', res.data.list);
+    fetchColumns({ commit }) {
+      getColumns().then(res => {
+        commit('fetchColumns', res.data.list);
+      });
+    },
+    fetchColumn({ commit }, cid) {
+      getColumnDetail({ id: cid }).then(res => {
+        commit('fetchColumn', res.data);
+      });
+    },
+    fetchPosts({ commit }, cid) {
+      getPosts({ id: cid }).then(res => {
+        commit('fetchPosts', res.data.list);
       });
     }
   },
@@ -70,8 +86,8 @@ const store = createStore<GlobalDataProps>({
     getColumnById: state => (id: string) => {
       return state.columns.find(c => c._id === id);
     },
-    getPostsByCid: state => (currentId: number) => {
-      return state.posts.filter(post => post.columnId === currentId);
+    getPostsByCid: state => (currentId: string) => {
+      return state.posts.filter(post => post.column === currentId);
     }
   },
   plugins: [createLogger()]

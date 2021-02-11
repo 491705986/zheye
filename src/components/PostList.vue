@@ -10,7 +10,7 @@
         <div class="row my-3 align-items-center">
           <div v-if="post.image" class="col-4">
             <img
-              :src="post.image.fitUrl"
+              :src="post.image.url"
               :alt="post.title"
               class="rounded-lg w-100"
             />
@@ -27,18 +27,8 @@
 
 <script lang="ts">
 import { PropType, defineComponent } from 'vue';
+import { PostProps } from '@/store';
 
-interface PostProps {
-  _id?: string;
-  title: string;
-  excerpt?: string;
-  content?: string;
-  image?: string;
-  createdAt?: string;
-  column: string;
-  author?: string;
-  isHTML?: boolean;
-}
 export default defineComponent({
   name: 'PostList',
   props: {
